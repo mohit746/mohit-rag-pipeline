@@ -10,3 +10,4 @@ build/
 chroma_db/
 data/*.pdf
 .env.example
+/data

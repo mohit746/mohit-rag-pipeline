@@ -1,4 +1,5 @@
 import os
+import numpy as np
 from dotenv import load_dotenv
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
@@ -12,8 +13,24 @@ embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
 db = Chroma(persist_directory=CHROMA_DIR, embedding_function=embeddings)
 client = Groq()
 
-
 MAX_CONTEXT_TOKENS = 3000
+semantic_cache = []
+CACHE_THRESHOLD = 0.95
+
+retriever = db.as_retriever(
+        search_type="mmr",
+        search_kwargs={"k": 5, "fetch_k": 20, "lambda_mult": 0.5})
+
+
+def cosine_similarity(a, b):
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+
+def cache_lookup(query_embedding):
+    for cached_emb, cached_response in semantic_cache:
+        if cosine_similarity(query_embedding, cached_emb) > CACHE_THRESHOLD:
+            return cached_response
+    return None
 
 # Helper function to select chunks while respecting the token budget
 def select_chunks_within_budget(chunks):
@@ -40,8 +57,18 @@ def build_context(chunks):
 
 # Full RAG pipeline function
 def ask(question: str) -> str:
-    # retrieve
-    mmr_docs = db.max_marginal_relevance_search(question, k=5, fetch_k=20)
+    query_emb = np.array(embeddings.embed_query(question))
+    cached_response = cache_lookup(query_emb)
+    if cached_response:
+        print("  ⚡ CACHE HIT — skipping retrieval + LLM")
+        return cached_response
+
+    # retrieve direct method:
+    # mmr_docs = db.max_marginal_relevance_search(question, k=5, fetch_k=20)
+
+    # as_retriever method:
+    mmr_docs = retriever.invoke(question)
+
     raw_results = db.similarity_search_with_score(question, k=5)
 
     
@@ -51,9 +78,11 @@ def ask(question: str) -> str:
         print(f"  No relevant documents found (best score: {best_score:.4f}).")
         return "I don't have that information in the provided documents."
     
-    raw_results = [(doc, 0.0) for doc in mmr_docs]
+    # raw_results = [(doc, 0.0) for doc in mmr_docs]
+    mmr_results = [(doc, 0.0) for doc in mmr_docs]
     # guard
-    results = select_chunks_within_budget(raw_results)
+    # results = select_chunks_within_budget(raw_results)
+    results = select_chunks_within_budget(mmr_results)
 
     source_info = {}
     for doc, score in results:
@@ -67,7 +96,7 @@ def ask(question: str) -> str:
  
     
     # build context
-    context = build_context(raw_results)
+    context = build_context(results)
     
     # call LLM
     response = client.chat.completions.create(
@@ -81,8 +110,10 @@ def ask(question: str) -> str:
             {"role": "user", "content": question}
         ]
     )
-    source_lines = [f"- {title} (Pages: {', '.join(str(p) for p in sorted(pages))})" for title, pages in source_info.items()]
-    return response.choices[0].message.content + "\n\n📎 Sources:\n" + "\n".join(source_lines)
+    source_lines = [f"- {title} (Pages: {', '.join(str(p) for p in sorted(pages, key=lambda p: int(p) if str(p).isdigit() else p))})" for title, pages in source_info.items()]
+    final_response = response.choices[0].message.content + "\n\n📎 Sources:\n" + "\n".join(source_lines)
+    semantic_cache.append((query_emb, final_response))
+    return final_response
 
     # return response.choices[0].message.content + "\n\n" + "Sources:\n" + "\n".join([f"- {title} (Page {page_label})" for title, page_label in source_info.items()])
 
@@ -91,10 +122,11 @@ def ask(question: str) -> str:
 if __name__ == "__main__":
     questions = [
         # "Who is the richest person on Earth?"
-        "What is a mutable default argument in Python?"
-        # "What is a mutable default argument in Python and why is it dangerous?",
+        "What is a mutable default argument in Python?",
+        "What is a mutable default argument in Python?",
+        "What is a mutable default argument in Python and why is it dangerous?",
         # "How does dictionary comprehension work?",
-        # "What happens when you do list slicing with assignment?",
+        "What happens when you do list slicing with assignment?",
     ]
     
     for q in questions:

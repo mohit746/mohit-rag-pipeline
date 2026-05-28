@@ -41,13 +41,33 @@ def build_context(chunks):
 # Full RAG pipeline function
 def ask(question: str) -> str:
     # retrieve
+    mmr_docs = db.max_marginal_relevance_search(question, k=5, fetch_k=20)
     raw_results = db.similarity_search_with_score(question, k=5)
+
     
+    # early exit guard: if no relevant documents, return early without calling LLM
+    best_score = min(raw_results, key=lambda x: x[1])[1]
+    if best_score > 0.75:
+        print(f"  No relevant documents found (best score: {best_score:.4f}).")
+        return "I don't have that information in the provided documents."
+    
+    raw_results = [(doc, 0.0) for doc in mmr_docs]
     # guard
     results = select_chunks_within_budget(raw_results)
+
+    source_info = {}
+    for doc, score in results:
+        title = doc.metadata.get('title', 'Unknown')
+        page_label = doc.metadata.get('page_label', '?')
+        if title not in source_info:
+            source_info[title] = set()
+        source_info[title].add(page_label)
+    
+    print(f" source_info: {source_info}")
+ 
     
     # build context
-    context = build_context(results)
+    context = build_context(raw_results)
     
     # call LLM
     response = client.chat.completions.create(
@@ -61,15 +81,20 @@ def ask(question: str) -> str:
             {"role": "user", "content": question}
         ]
     )
-    return response.choices[0].message.content
+    source_lines = [f"- {title} (Pages: {', '.join(str(p) for p in sorted(pages))})" for title, pages in source_info.items()]
+    return response.choices[0].message.content + "\n\n📎 Sources:\n" + "\n".join(source_lines)
+
+    # return response.choices[0].message.content + "\n\n" + "Sources:\n" + "\n".join([f"- {title} (Page {page_label})" for title, page_label in source_info.items()])
 
 
 # Test the RAG pipeline with some questions
 if __name__ == "__main__":
     questions = [
-        "What is a mutable default argument in Python and why is it dangerous?",
-        "How does dictionary comprehension work?",
-        "What happens when you do list slicing with assignment?",
+        # "Who is the richest person on Earth?"
+        "What is a mutable default argument in Python?"
+        # "What is a mutable default argument in Python and why is it dangerous?",
+        # "How does dictionary comprehension work?",
+        # "What happens when you do list slicing with assignment?",
     ]
     
     for q in questions:

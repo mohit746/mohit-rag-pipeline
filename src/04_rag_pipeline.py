@@ -135,3 +135,8 @@ if __name__ == "__main__":
         print(f"{'─'*60}")
         answer = ask(q)
         print(answer)
+    
+    # Below code is to verify the dimensions of embeddings - you can run it once and then comment it out
+    # embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+    # test = embeddings.embed_query("hello")
+    # print("Dimensionality of the hello word: ", len(test))  # This is your dimension number

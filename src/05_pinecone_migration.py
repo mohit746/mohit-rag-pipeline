@@ -51,7 +51,8 @@ def migrate_to_pinecone(batch_size=100):
             "values": embedding.tolist(),
             "metadata": {
                 **metadata,
-                "doc_name": metadata.get("title", "unknown"),
+                "doc_name": metadata.get("title", "unknown") + ".pdf",
+                "text": collection["documents"][i],
                 "page_number": int(metadata.get("page_label", 0)) if str(metadata.get("page_label", "0")).isdigit() else 0,
                 "date": int(datetime(2024, 1, 1, tzinfo=timezone.utc).timestamp()),
                 "indexed_at": datetime.now().isoformat()
@@ -86,6 +87,7 @@ def reindex_document(doc_path: str, namespace: str = ""):
             "values": emb,
             "metadata": {
                 "doc_name": doc_name,
+                "text": chunk.page_content,
                 "page_number": chunk.metadata.get("page_label", 0),
                 "indexed_at": datetime.now().isoformat()
             }

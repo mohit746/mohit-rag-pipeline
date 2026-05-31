@@ -72,3 +72,13 @@ Prints chunk count, avg/min/max size, and a sample chunk for each.
 -> If there is no existing DB and new setup is created with greenfield project - pinecone is best option
 
 
+## Day 10 — RAGAS Evaluation
+
+Evaluated 14 Q&A pairs generated from Python Refresher 1.pdf using a manual RAGAS-style scorer (Groq llama-3.3-70b as judge, Gemini embeddings for relevancy).
+
+| Metric | Score | Target | Status |
+|--------|-------|--------|--------|
+| Faithfulness | 0.49 | > 0.75 | ❌ Below target |
+| Answer Relevancy | 0.84 | > 0.70 | ✅ Above target |
+
+**Key finding:** Low faithfulness on questions about .split(), map(), list() wrapping — LLM answers from general knowledge when retrieved chunks are MCQ-format and don't contain full explanations.

@@ -63,12 +63,13 @@ def build_context(matches):
 
 
 # Full RAG pipeline function
-def ask(question: str) -> str:
+def ask(question: str, use_cache: bool = True) -> str:
     query_emb = np.array(embeddings.embed_query(question))
-    cached_response = cache_lookup(query_emb)
-    if cached_response:
-        print("  ⚡ CACHE HIT — skipping retrieval + LLM")
-        return cached_response
+    if use_cache == True:
+        cached_response = cache_lookup(query_emb)
+        if cached_response:
+            print("  ⚡ CACHE HIT — skipping retrieval + LLM")
+            return cached_response, []
 
     # retrieval step
     raw_results = index.query(vector=query_emb.tolist(), top_k=5, include_metadata=True)
@@ -78,8 +79,8 @@ def ask(question: str) -> str:
     best_score = max(m.score for m in raw_results.matches)
     if best_score < 0.3:
         print(f"  No relevant documents found (best score: {best_score:.4f}).")
-        return "I don't have that information in the provided documents."
-    
+        return "I don't have that information in the provided documents.", []
+
     source_info = {}
     for match in raw_results.matches:
         title = match.metadata.get('doc_name', 'Unknown')
@@ -93,6 +94,7 @@ def ask(question: str) -> str:
     
     # build context
     results = select_chunks_within_budget(raw_results.matches)
+    text_chunks = [m.metadata.get("text", "") for m in results]
     context = build_context(results)
     
     # call LLM
@@ -114,8 +116,8 @@ def ask(question: str) -> str:
         "embedding": query_emb.tolist(),
         "answer": final_response
     }))
-    return final_response
-
+    return final_response, text_chunks
+    # return final_response
     # return response.choices[0].message.content + "\n\n" + "Sources:\n" + "\n".join([f"- {title} (Page {page_label})" for title, page_label in source_info.items()])
 
 
@@ -134,7 +136,7 @@ if __name__ == "__main__":
         print(f"\n{'='*60}")
         print(f"Q: {q}")
         print(f"{'─'*60}")
-        answer = ask(q)
+        answer, text_chunks = ask(q, use_cache=True)
         print(answer)
     
     # Below code is to verify the dimensions of embeddings - you can run it once and then comment it out

@@ -1,0 +1,98 @@
+{
+  "method": "semantic_only",
+  "questions_count": 15,
+  "avg_faithfulness": 0.49333333333333335,
+  "avg_relevancy": 0.812210665451737,
+  "results": [
+    {
+      "question": "What is a mutable default argument in Python?",
+      "answer": "In Python, a mutable default argument is a default argument that is a mutable object, such as a list, dictionary, or set, which is evaluated only once when the function is defined, not each time the function is called [Source: Python Refresher 1.pdf, Page 8]. This means that any changes made to the mutable object will persist across future function calls.\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 3, 8)",
+      "faithfulness": 0.4,
+      "relevancy": 0.8462782454599347
+    },
+    {
+      "question": "How does list slicing with assignment work in Python?",
+      "answer": "In Python, list slicing with assignment works by replacing the elements in the specified slice with the new values. [Source: Python Refresher 1.pdf, Page 6] \n\nWhen you use the syntax `my_list[2:4] = [8, 9]`, it replaces the elements at indices 2 and 3 in `my_list` with the values 8 and 9, respectively. [Source: Python Refresher 1.pdf, Page 6] \n\nFor example, if `my_list` is initially `[1, 2, 3, 4, 5]`, after the assignment `my_list[2:4] = [8, 9]`, `my_list` will become `[1, 2, 8, 9, 5]`. [Source: Python Refresher 1.pdf, Page 6] \n\nThis is because the slice `my_list[2:4]` includes the elements at indices 2 and 3, which are 3 and 4, respectively, and these are replaced by the new values 8 and 9. [Source: Python Refresher 1.pdf, Page 6]\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 5, 6, 8)",
+      "faithfulness": 0.8,
+      "relevancy": 0.8274012089844499
+    },
+    {
+      "question": "What happens when you call my_set.add([4, 5]) in Python?",
+      "answer": "When you call my_set.add([4, 5]) in Python, it will raise a TypeError because you cannot add a mutable (non-hashable) object like a list to a set [Source: Python Refresher 1.pdf, Page 3].\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 3, 5, 6)",
+      "faithfulness": 0.0,
+      "relevancy": 0.841737231164763
+    },
+    {
+      "question": "What is function call and return values in Python?",
+      "answer": "Function calls and return values in Python are as follows: \nThe given code defines a function 'func' that takes two arguments, 'a' and 'b', and returns their sum [Source: Python Refresher 1.pdf, Page 10]. \nThe function is called three times with different arguments: \n1. func(a, b): Here, 'a' is 10 and 'b' is 20. The function computes 10 + 20, which equals 30 [Source: Python Refresher 1.pdf, Page 10].\n2. func(a, 10): Here, 'a' is 10 and the second argument is 10. The function computes 10 + 10, which equals 20 [Source: Python Refresher 1.pdf, Page 10].\n3. func(b, 20): Here, 'b' is 20 and the second argument is 20. The function computes 20 + 20, which equals 40 [Source: Python Refresher 1.pdf, Page 10].\nThe return values of these function calls are 30, 20, and 40, respectively [Source: Python Refresher 1.pdf, Page 10].\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 6, 8, 10)",
+      "faithfulness": 0.6,
+      "relevancy": 0.7882564105363218
+    },
+    {
+      "question": "What is dictionary iteration in Python?",
+      "answer": "Dictionary iteration in Python refers to the process of looping over the key-value pairs of a dictionary. According to the context, `my_dict.items()` generates an iterator over the dictionary's key-value pairs [Source: Python Refresher 1.pdf, Page 9]. This allows you to access each key-value pair in the dictionary, making it possible to perform various operations, such as swapping keys and values, as seen in the example: `{value: key for key, value in my_dict.items()}` [Source: Python Refresher 1.pdf, Page 9].\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 3, 4, 9)",
+      "faithfulness": 0.8,
+      "relevancy": 0.8092923807253218
+    },
+    {
+      "question": "What is a byte string in Python and how is it defined?",
+      "answer": "A byte string in Python is a sequence of bytes, where each byte is represented by an integer (0-255) corresponding to the ASCII value of the character [Source: Python Refresher 1.pdf, Page 2]. It is defined by prefixing a string with a 'b', for example, b\"Python\" [Source: Python Refresher 1.pdf, Page 2].\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 1, 2, 4)",
+      "faithfulness": 0.8,
+      "relevancy": 0.7921013904131414
+    },
+    {
+      "question": "What does accessing an individual element by index in a byte string return?",
+      "answer": "When you access an element of the byte string using an index, it returns the byte (integer) at that position in the byte string. [Source: Python Refresher 1.pdf, Page 2]\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 1, 2, 3, 6)",
+      "faithfulness": 0.8,
+      "relevancy": 0.845523977656007
+    },
+    {
+      "question": "How does the dictionary .get() method handle a key that is missing when a default value is provided?",
+      "answer": "The dictionary .get() method returns the default value when a key is missing and a default value is provided [Source: Python Refresher 1.pdf, Page 3].\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 3, 4, 8)",
+      "faithfulness": 0.8,
+      "relevancy": 0.8307395176084985
+    },
+    {
+      "question": "What is the default return value of the dictionary .get() method if the requested key is missing and no fallback value is explicitly provided?",
+      "answer": "The default return value of the dictionary .get() method if the requested key is missing and no fallback value is explicitly provided is None [Source: Python Refresher 1.pdf, Page 4].\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 3, 4, 8, 9)",
+      "faithfulness": 0.8,
+      "relevancy": 0.8408202462221075
+    },
+    {
+      "question": "How does the modulo assignment operator (%=) evaluate and update a variable?",
+      "answer": "The modulo assignment operator (%=) evaluates and updates a variable by calculating the remainder of the division of the variable's value by another value, and then assigns this remainder back to the variable. [Source: Python Refresher 1.pdf, Page 5] \n\nFor example, given the operation \"a %= b\", it is equivalent to \"a = a % b\", where the modulus operator % returns the remainder of the division of a by b. [Source: Python Refresher 1.pdf, Page 5] \n\nIn the case where a = 5 and b = 3, the remainder of 5 divided by 3 is 2, so the value of a becomes 2 after the operation. [Source: Python Refresher 1.pdf, Page 5]\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 1, 4, 5, 10)",
+      "faithfulness": 0.4,
+      "relevancy": 0.8408631403078354
+    },
+    {
+      "question": "How can a dictionary comprehension be used to swap keys and values of an existing dictionary?",
+      "answer": "A dictionary comprehension can be used to swap keys and values of an existing dictionary with the following syntax: {value: key for key, value in my_dict.items()}. This comprehension iterates over the key-value pairs in the original dictionary and creates a new dictionary where the values become the keys and the keys become the values [Source: Python Refresher 1.pdf, Page 9].\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 3, 4, 9)",
+      "faithfulness": 0.8,
+      "relevancy": 0.8676268800693647
+    },
+    {
+      "question": "What is the function of the .split() method when applied to user input via input()?",
+      "answer": "The function of the .split() method when applied to user input via input() is to split the input string into a list of strings based on spaces [Source: Python Refresher 1.pdf, Page 11]. For example, if the input is \"1 2 3\", it will result in ['1', '2', '3'] [Source: Python Refresher 1.pdf, Page 11].\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 11, 12)",
+      "faithfulness": 0.4,
+      "relevancy": 0.8434700665115651
+    },
+    {
+      "question": "Why is the map() function used when taking multiple numeric user inputs in a single line?",
+      "answer": "The map() function is used when taking multiple numeric user inputs in a single line to apply the int function to each element of the input string, converting them to integers [Source: Python Refresher 1.pdf, Page 11]. This is necessary because the input().split() function alone would result in a list of strings, not integers [Source: Python Refresher 1.pdf, Page 11].\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 11, 12)",
+      "faithfulness": 0.0,
+      "relevancy": 0.8807417890645176
+    },
+    {
+      "question": "Why must list() be wrapped around a map() operation when capturing multiple inputs?",
+      "answer": "The map() operation returns a map object, which is an iterable, but it is not a list [Source: Python Refresher 1.pdf, Page 11]. To convert the result of map() into a list, list() must be wrapped around it [Source: Python Refresher 1.pdf, Page 11]. This is because the map object itself doesn't directly show the integer values, and it needs to be converted to a list to be used as such [Source: Python Refresher 1.pdf, Page 11].\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 11, 12)",
+      "faithfulness": 0.0,
+      "relevancy": 0.7458757908783451
+    },
+    {
+      "question": "What is the concept of variable scope in Python?",
+      "answer": "I don't have that information in the provided documents.\n\n\ud83d\udcce Sources:\n- Python Refresher 1.pdf (Pages: 1, 4, 8, 10)",
+      "faithfulness": 0.0,
+      "relevancy": 0.5824317061738824
+    }
+  ]
+}

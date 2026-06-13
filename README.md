@@ -82,3 +82,36 @@ Evaluated 14 Q&A pairs generated from Python Refresher 1.pdf using a manual RAGA
 | Answer Relevancy | 0.84 | > 0.70 | ✅ Above target |
 
 **Key finding:** Low faithfulness on questions about .split(), map(), list() wrapping — LLM answers from general knowledge when retrieved chunks are MCQ-format and don't contain full explanations.
+
+## Day 11 — Hybrid Search (BM25 + Semantic)
+
+Built a **hybrid search system** combining keyword-based (BM25) and semantic (Pinecone) retrieval with Reciprocal Rank Fusion (RRF).
+
+### Architecture
+1. **BM25 Index** — tokenizes & indexes 61 document chunks for keyword matching
+2. **Semantic Search** — Pinecone embeddings for semantic similarity (0-1 similarity score)
+3. **RRF Fusion** — combines both using formula: `score = 1/(k + rank)` where k=60
+
+### Evaluation Results (15 test questions)
+
+| Method | Faithfulness | Answer Relevancy | Status |
+|--------|--------------|------------------|--------|
+| Baseline (Semantic Only) | 0.4933 (49.3%) | 0.8122 (81.2%) | ✅ baseline |
+| Hybrid (BM25 + Semantic) | 0.4533 (45.3%) | 0.7753 (77.5%) | ⚠️ -4.0% / -3.7% |
+
+### Key Finding
+Surprisingly, **hybrid search underperformed**. Possible reasons:
+- BM25 over-fits to keywords in MCQ format chunks (e.g., "dictionary" keyword without context)
+- RRF with equal weighting (50/50) splits the difference when algorithms disagree
+- Semantic-only was already strong for this corpus (0.81 relevancy)
+
+### Next Steps to Improve Hybrid
+1. **Tune RRF weights** — give semantic 70%, BM25 30%
+2. **Improve BM25 tokenization** — use lemmatization instead of simple split()
+3. **Adjust k parameter** — test k=10, k=100 instead of k=60
+4. **Different chunk strategy** — maybe current chunks favor semantic approach
+
+### Scripts
+- `src/09_hybrid_search.py` — hybrid search implementation
+- `src/10_evaluate_baseline.py` — baseline evaluation (semantic-only)
+- `src/10_evaluate_hybrid.py` — hybrid search evaluation

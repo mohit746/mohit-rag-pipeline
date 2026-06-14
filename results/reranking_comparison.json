@@ -1,0 +1,91 @@
+{
+  "hybrid_search": {
+    "results": [
+      {
+        "question": "What is a mutable default argument in Python?",
+        "answer": "A mutable default argument in Python is a default argument that is a mutable object, such as a list, dictionary, or set, which is evaluated only once when the function is defined, not each time the function is called [Source: Python Refresher 1.pdf, Page 7]. This means that any changes made to the mutable object will persist across future function calls.",
+        "faithfulness": 0.8,
+        "relevancy": 0.8786288303823174,
+        "precision@5": 0.6
+      },
+      {
+        "question": "How does list slicing with assignment work in Python?",
+        "answer": "I don't have that information in the provided documents.",
+        "faithfulness": 0.0,
+        "relevancy": 0.45021193650055324,
+        "precision@5": 0.4
+      },
+      {
+        "question": "What happens when you call my_set.add([4, 5]) in Python?",
+        "answer": "When you call my_set.add([4, 5]) in Python, it will raise a TypeError [Source: Question 3, no page specified]. This is because you cannot add a mutable (non-hashable) object like a list to a set [Source: Question 3, no page specified].",
+        "faithfulness": 0.8,
+        "relevancy": 0.8838105332485504,
+        "precision@5": 0.4
+      },
+      {
+        "question": "What is function call and return values in Python?",
+        "answer": "In Python, a function call is when a function is invoked or executed, and return values are the results that the function produces after execution [Source: Python Refresher 1.pdf, Page 9]. \n\nWhen a function is called, it can take arguments, perform some operations, and then return values to the caller [Source: Python Refresher 1.pdf, Page 9]. \n\nFor example, in the given code snippet: \ndef func(a, b): \n    return a + b \nThe function call is \"func(a, b)\" and the return value is the result of \"a + b\" [Source: Python Refresher 1.pdf, Page 9]. \n\nIn another example, in the given code snippet: \ndef tricky_function(lst): \n    lst = lst + [4] \n    lst[0] = 99 \n    return lst \nThe function call is \"tricky_function(my_list)\" and the return value is the modified list \"[99, 2, 3, 4]\" [Source: Python Refresher 2.pdf, Page 13]. \n\nIn general, function calls and return values are fundamental concepts in Python programming, allowing functions to communicate with each other and exchange data [Source: Python Refresher 1.pdf, Page 9].",
+        "faithfulness": 0.0,
+        "relevancy": 0.8798843157841317,
+        "precision@5": 1.0
+      },
+      {
+        "question": "What is dictionary iteration in Python?",
+        "answer": "I don't have that information in the provided documents.",
+        "faithfulness": 1.0,
+        "relevancy": 0.4515846974857777,
+        "precision@5": 0.6
+      }
+    ],
+    "avg_faithfulness": 0.52,
+    "avg_relevancy": 0.7088240626802661,
+    "avg_precision@5": 0.6
+  },
+  "hybrid_with_reranking": {
+    "results": [
+      {
+        "question": "What is a mutable default argument in Python?",
+        "answer": "In Python, a mutable default argument is a default argument that is a mutable object, such as a list, dictionary, or set, which is evaluated only once when the function is defined, not each time the function is called [Source: Python Refresher 1.pdf, Page 7]. \n\nThis means that if the default argument is a mutable object and it is modified, the changes will persist across future function calls [Source: Python Refresher 1.pdf, Page 7].",
+        "faithfulness": 0.8,
+        "relevancy": 0.8712421764745993,
+        "precision@5": 0.4
+      },
+      {
+        "question": "How does list slicing with assignment work in Python?",
+        "answer": "I don't have that information in the provided documents.",
+        "faithfulness": 0.0,
+        "relevancy": 0.45021193650055324,
+        "precision@5": 0.8
+      },
+      {
+        "question": "What happens when you call my_set.add([4, 5]) in Python?",
+        "answer": "When you call my_set.add([4, 5]) in Python, it will raise a TypeError because you cannot add a mutable (non-hashable) object like a list to a set. [Source: Python Refresher 1.pdf, Page 2]",
+        "faithfulness": 0.8,
+        "relevancy": 0.8834478512446378,
+        "precision@5": 0.6
+      },
+      {
+        "question": "What is function call and return values in Python?",
+        "answer": "I don't have that information in the provided documents.",
+        "faithfulness": 0.0,
+        "relevancy": 0.4643192341845855,
+        "precision@5": 0.8
+      },
+      {
+        "question": "What is dictionary iteration in Python?",
+        "answer": "Dictionary iteration in Python refers to the process of looping over the key-value pairs in a dictionary. [Source: Python Refresher 1.pdf, Page 8] \n\nWhen you iterate over a dictionary using the .items() method, it generates an iterator over the dictionary's key-value pairs. [Source: Python Refresher 1.pdf, Page 8] \n\nFor example, given a dictionary my_dict = {1: 'a', 2: 'b', 3: 'c'}, iterating over it using .items() would yield the pairs (1, 'a'), (2, 'b'), and (3, 'c'). [Source: Python Refresher 1.pdf, Page 8] \n\nYou can use a dictionary comprehension to swap the keys and values, creating a new dictionary with the original values as keys and the original keys as values. [Source: Python Refresher 1.pdf, Page 8] \n\nIn the given example, my_dict2 = {value: key for key, value in my_dict.items()} would result in my_dict2 = {'a': 1, 'b': 2, 'c': 3}. [Source: Python Refresher 1.pdf, Page 8]",
+        "faithfulness": 0.8,
+        "relevancy": 0.8000905097734213,
+        "precision@5": 0.6
+      }
+    ],
+    "avg_faithfulness": 0.4800000000000001,
+    "avg_relevancy": 0.6938623416355594,
+    "avg_precision@5": 0.6400000000000001
+  },
+  "improvement": {
+    "faithfulness": -0.039999999999999925,
+    "relevancy": -0.014961721044706722,
+    "precision@5": 0.04000000000000015
+  }
+}
